@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>Microsoft.MixedRealityToolkit.Unity</id>
+    <version>0.1.0</version>
+    <authors>Microsoft</authors>
+    <owners>Microsoft</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Mixed Reality Toolkit</description>
+    <copyright>Copyright Microsoft 2017</copyright>
+    <tags></tags>
+  </metadata>
+  <files>
+    <file src="**\*.dll" target="lib\unity" exclude="Sharing\**"/>
+    <file src="**\*.dll.meta" target="lib\unity" exclude="Sharing\**"/>
+    <file src="**" target="" exclude="Sharing\**;**\*.dll.meta;**\*.dll"/>
+  </files>
+</package>
