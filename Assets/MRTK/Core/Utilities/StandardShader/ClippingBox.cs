@@ -41,6 +41,13 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             {
                 Gizmos.matrix = transform.localToWorldMatrix;
                 Gizmos.DrawWireCube(Vector3.zero, Vector3.one);
+
+                //Gizmos.color = Color.blue;
+                //Gizmos.matrix = Matrix4x4.identity;
+                //Gizmos.DrawWireCube(transform.)
+
+                //Bounds boxBounds = new Bounds(Vector3.zero, Vector3.one).Transform(transform.localToWorldMatrix);
+                //return !boxBounds.Intersects(bounds);
             }
         }
 
@@ -57,6 +64,15 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             clipBoxInverseTransform = transform.worldToLocalMatrix;
 
             base.BeginUpdateShaderProperties();
+        }
+
+        private Vector3[] corners;
+        protected override bool Cull(Bounds bounds)
+        {
+            if(ClippingSide == Side.Inside) { return false; }
+
+            Bounds boxBounds = new Bounds(Vector3.zero, Vector3.one).Transform(transform.localToWorldMatrix);
+            return !boxBounds.Intersects(bounds);
         }
 
         protected override void UpdateShaderProperties(MaterialPropertyBlock materialPropertyBlock)

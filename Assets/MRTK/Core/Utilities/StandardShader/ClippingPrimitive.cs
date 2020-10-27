@@ -46,6 +46,9 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         [SerializeField, Tooltip("Controls clipping features on the shared materials rather than material instances.")]
         private bool applyToSharedMaterial = false;
 
+        [SerializeField, Tooltip("If enabled, Renderers will be culled on the CPU")]
+        private bool cullingEnabled = true;
+
         /// <summary>
         /// Toggles whether the clipping features will apply to shared materials or material instances (default).
         /// </summary>
@@ -317,6 +320,11 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
                     continue;
                 }
 
+                if(cullingEnabled)
+                {
+                    _renderer.enabled = !Cull(_renderer.bounds);
+                }
+
                 _renderer.GetPropertyBlock(materialPropertyBlock);
                 materialPropertyBlock.SetFloat(clippingSideID, (float)clippingSide);
                 UpdateShaderProperties(materialPropertyBlock);
@@ -328,6 +336,7 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
         }
 
         protected virtual void BeginUpdateShaderProperties() { }
+        protected virtual bool Cull(Bounds bounds) { return false; }
         protected abstract void UpdateShaderProperties(MaterialPropertyBlock materialPropertyBlock);
         protected virtual void EndUpdateShaderProperties() { }
 

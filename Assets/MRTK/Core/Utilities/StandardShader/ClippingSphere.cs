@@ -76,6 +76,15 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             base.BeginUpdateShaderProperties();
         }
 
+        private Vector3[] corners;
+        protected override bool Cull(Bounds bounds)
+        {
+            if (ClippingSide == Side.Inside) { return false; }
+
+            Bounds boxBounds = new Bounds(Vector3.zero, Vector3.one).Transform(transform.localToWorldMatrix);
+            return !boxBounds.Intersects(bounds);
+        }
+
         /// <inheritdoc />
         protected override void UpdateShaderProperties(MaterialPropertyBlock materialPropertyBlock)
         {

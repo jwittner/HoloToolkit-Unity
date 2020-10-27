@@ -60,6 +60,34 @@ namespace Microsoft.MixedReality.Toolkit.Utilities
             base.BeginUpdateShaderProperties();
         }
 
+        private Vector3[] corners;
+        protected override bool Cull(Bounds bounds)
+        {
+            Vector3 planePosition = new Vector3(
+                clipPlane.x * clipPlane.w,
+                clipPlane.y * clipPlane.w,
+                clipPlane.z * clipPlane.w);
+
+            bounds.GetCornerPositions(ref corners);
+            foreach (Vector3 point in corners)
+            {
+                Vector3 delta = new Vector3(
+                    point.x - planePosition.x,
+                    point.y - planePosition.y,
+                    point.z - planePosition.z);
+
+                float distance = delta.x * clipPlane.x + delta.y * clipPlane.y + delta.z + clipPlane.z;
+
+                switch (ClippingSide)
+                {
+                    case Side.Inside: if (distance <= 0f) { return false; } break;
+                    case Side.Outside: if (distance >= 0f) { return false; } break;
+                }
+            }
+
+            return true;
+        }
+
         /// <inheritdoc />
         protected override void UpdateShaderProperties(MaterialPropertyBlock materialPropertyBlock)
         {
